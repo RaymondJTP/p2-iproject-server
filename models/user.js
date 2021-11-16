@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.UserRoom, {foreignKey : 'UserId'})
     }
   };
   User.init({
@@ -51,6 +51,12 @@ module.exports = (sequelize, DataTypes) => {
       validate : {
         notEmpty : {msg : 'Address is required'}
       }
+    },
+    longitude : {
+      type : DataTypes.STRING
+    },
+    latitude : {
+      type : DataTypes.STRING
     }
   }, {
     sequelize,
