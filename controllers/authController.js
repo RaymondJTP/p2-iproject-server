@@ -49,6 +49,28 @@ class Controller{
             next(err)
         }
     }
+
+    static async updateLocation (req,res,next){
+        try {
+            const UserId = +req.user.id
+
+            const getUser = await User.findByPk(UserId)
+
+            if(!getUser){
+                throw({name : 'usernotfound'})
+            }
+            const location = {latitude : req.body.latitude, longitude : req.body.longitude}
+
+            const result = await User.update(
+                location,
+                {where : {id : UserId}, returning : true}
+            )
+
+            res.status(200).json(result)
+        } catch (err) {
+            next(err)
+        }
+    }
 }
 
 module.exports = Controller

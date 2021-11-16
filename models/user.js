@@ -51,6 +51,12 @@ module.exports = (sequelize, DataTypes) => {
       validate : {
         notEmpty : {msg : 'Address is required'}
       }
+    },
+    longitude : {
+      type : DataTypes.STRING
+    },
+    latitude : {
+      type : DataTypes.STRING
     }
   }, {
     sequelize,

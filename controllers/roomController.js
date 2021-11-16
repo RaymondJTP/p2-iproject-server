@@ -49,6 +49,20 @@ class Controller{
         }
     }
 
+    static async getUserRoom(req,res,next){
+        try {
+            const RoomId = req.params.id
+            const result = await UserRoom.findAll({
+                where : {RoomId : RoomId},
+                include : User
+            })
+
+            res.status(200).json(result)
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static async deleteRoom(req,res,next){
         try {
             const RoomId = +req.params.id
