@@ -7,7 +7,12 @@ class Controller{
     static async register(req,res,next){
         try {
             let {username,email,password,address,phoneNumber} = req.body
-
+            const getUser = await User.findOne({
+                where : {email : email}
+            })
+            if(getUser){
+                throw ({name : 'unique'})
+            }
             const result = await User.create({
                 username,email,password,address,phoneNumber
             })

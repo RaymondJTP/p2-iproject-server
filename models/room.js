@@ -2,6 +2,10 @@
 const {
   Model
 } = require('sequelize');
+
+const {hashPassword} = require('../helpers/bycript');
+
+
 module.exports = (sequelize, DataTypes) => {
   class Room extends Model {
     /**
@@ -42,6 +46,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Room',
+    hooks : {
+      beforeCreate : (room,options) => {
+        room.passwordRoom = hashPassword(room.passwordRoom)
+      }
+    }
   });
   return Room;
 };
