@@ -10,13 +10,34 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Room.hasMany(models.UserRoom, {foreignKey : 'RoomId'})
     }
   };
   Room.init({
-    name: DataTypes.STRING,
-    member: DataTypes.INTEGER,
-    passwordRoom: DataTypes.STRING,
+    name: {
+      type : DataTypes.STRING,
+      allowNull : false,
+      validate : {
+        notNull : {msg : 'Room Name cant be empty'},
+        notEmpty : {msg : 'Room Name cant be empty'}
+      }
+    },
+    member: {
+      type : DataTypes.INTEGER,
+      allowNull : false,
+      validate : {
+        notNull : {msg : 'Total Member cant be empty'},
+        notEmpty : {msg : 'Total Member room cant be empty'}
+      }
+    },
+    passwordRoom: {
+      type : DataTypes.STRING,
+      allowNull : false,
+      validate : {
+        notNull : {msg : 'Please input your password'},
+        notEmpty : {msg : 'Password Room cant be empty'}
+      }
+    },
     UserId: DataTypes.INTEGER
   }, {
     sequelize,

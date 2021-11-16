@@ -29,14 +29,11 @@ module.exports = {
       status : {
         type : Sequelize.STRING
       },
-      RoomId : {
-        type : Sequelize.INTEGER,
-        reference : {
-          model : {
-            tableName : 'Rooms'
-          },
-          key : 'id'
-        }
+      longitude : {
+        type : Sequelize.STRING
+      },
+      latitude : {
+        type : Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
