@@ -1,6 +1,8 @@
 const {User} = require('../models')
 const {signToken} = require('../helpers/jwt')
 const {comparePassword} = require('../helpers/bycript')
+const nodemailer = require('nodemailer');
+
 
 
 class Controller{
@@ -43,6 +45,31 @@ class Controller{
             }
             let tokenPayLoad = {id : getUser.id, email: getUser.email}
             let access_token = signToken(tokenPayLoad)
+
+
+            let mailTransporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'raymondpanjaitan11@gmail.com',
+                    pass: process.env.PASS_GMAIL
+                }
+            });
+
+            let mailDetails = {
+                from: 'Admin Find Me App',
+                to: getUser.email,
+                subject: 'Login mail',
+                text: 'Login information mail for FindMe App'
+            };
+              
+            mailTransporter.sendMail(mailDetails, function(err, data) {
+                if(err) {
+                    console.log('Error Occurs');
+                } else {
+                    console.log('Email sent successfully');
+                }
+            });
+
 
             res.status(200).json({message: 'Login Succes', access_token})
         } catch (err) {

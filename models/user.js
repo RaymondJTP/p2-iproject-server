@@ -52,6 +52,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty : {msg : 'Address is required'}
       }
     },
+    status : {
+      type :DataTypes.STRING,
+      defaultValue : 'online'
+    },
     longitude : {
       type : DataTypes.STRING
     },

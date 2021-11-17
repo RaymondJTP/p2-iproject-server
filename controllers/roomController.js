@@ -30,6 +30,7 @@ class Controller{
             const UserId = +req.user.id
             const {passwordRoom} = req.body
             const RoomId = +req.params.id
+            console.log(passwordRoom, 'ini password roomnya');
 
             const getRoom = await Room.findByPk(RoomId)
 
@@ -69,10 +70,30 @@ class Controller{
             const UserId = +req.user.id
 
             const result = await Room.destroy({
-                where : {id : RoomId}
+                where : {id : RoomId},
+                returning : true
             })
 
             res.status(200).json('Delete Success')
+        } catch (err) {
+            
+        }
+    }
+
+    static async leaveRoom(req,res,next){
+        try {
+            const RoomId = +req.params.id
+            const UserId = +req.user.id
+
+            const result = await UserRoom.destroy({
+                where : {
+                    RoomId : RoomId,
+                    UserId : UserId
+                },
+                returning : true
+            })
+
+            res.status(200).json('Success Leave Room')
         } catch (err) {
             
         }

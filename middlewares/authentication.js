@@ -3,6 +3,8 @@ const {verifyToken} = require('../helpers/jwt')
 
 const authentication = async (req,res,next) => {
     try {
+        console.log('masuk sini erorauth');
+
         const {access_token} = req.headers
 
         if(!access_token){
