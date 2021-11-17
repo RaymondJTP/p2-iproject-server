@@ -2,7 +2,8 @@ const {User} = require('../models')
 const {signToken} = require('../helpers/jwt')
 const {comparePassword} = require('../helpers/bycript')
 const nodemailer = require('nodemailer');
-
+const {OAuth2Client} = require('google-auth-library');
+const jwt = require('jsonwebtoken');
 
 
 class Controller{
@@ -59,7 +60,7 @@ class Controller{
                 from: 'Admin Find Me App',
                 to: getUser.email,
                 subject: 'Login mail',
-                text: 'Login information mail for FindMe App'
+                text: `Login information mail for FindMe App, , please kindly reply if it's not you`
             };
               
             mailTransporter.sendMail(mailDetails, function(err, data) {
@@ -98,6 +99,72 @@ class Controller{
             next(err)
         }
     }
+
+    static async google(req,res,next){
+        console.log('asuuup');
+        try {
+            const {id_token} = req.body
+            const client_id = process.env.GOOGLEID
+            const client = new OAuth2Client(client_id);
+           
+
+            const ticket = await client.verifyIdToken({
+                idToken: id_token,
+                audience: client_id, 
+            });
+            const payload = ticket.getPayload()
+            const {email} = payload
+            console.log(email);
+
+
+            const [user, isCreated] = await User.findOrCreate({
+                where : {
+                    email : email
+                },
+                defaults : {
+                    username : 'userstaff',
+                    password : 'afasf9ade3afa',
+                    address : 'Indonesia',
+                    phoneNumber : '081941845871'
+                }
+            })
+
+
+            let status = 200
+            if(isCreated){
+                status = 201
+            }
+            let mailTransporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'raymondpanjaitan11@gmail.com',
+                    pass: process.env.PASS_GMAIL
+                }
+            });
+
+            let mailDetails = {
+                from: 'Admin Find Me App',
+                to: email,
+                subject: 'Login mail',
+                text: `Login information mail for FindMe App, please kindly reply if it's not you`
+            };
+              
+            mailTransporter.sendMail(mailDetails, function(err, data) {
+                if(err) {
+                    console.log('Error Occurs');
+                } else {
+                    console.log('Email sent successfully');
+                }
+            });
+            const access_token = jwt.sign({ id : user.id, email : user.email}, process.env.JWTGOOGLE)
+            res.status(status).json({access_token})
+
+        } catch (err) {
+            console.log(err.message);
+            next(err)
+        }
+    }
+
 }
 
 module.exports = Controller
