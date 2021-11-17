@@ -68,13 +68,22 @@ class Controller{
             // let location = ''
             
             // console.log(weather.data.data[0]);
+            // for(let i = 0; i < result.length; i++){
+            //     let weather = await axios({
+            //         method : 'GET',
+            //         url : `https://api.weatherbit.io/v2.0/current?lat=${result[i].User.latitude}&lon=${result[i].User.longitude}&key=aa901ff9d89c451fa8ce9fc54b2b94cf&include=minutely`
+            //     })    
+            //     result[i].setDataValue('Weather', weather.data.data[0])
+            // }
+            //   console.log(weather.data.data[0]);
             for(let i = 0; i < result.length; i++){
                 let weather = await axios({
                     method : 'GET',
-                    url : `https://api.weatherbit.io/v2.0/current?lat=${result[i].User.latitude}&lon=${result[i].User.longitude}&key=aa901ff9d89c451fa8ce9fc54b2b94cf&include=minutely`
+                    url : `https://api.weatherbit.io/v2.0/current?lat=${result[i].User.latitude}&lon=${result[i].User.longitude}&key=1d586c14c3594bdc8307dcba22febae2&include=minutely`
                 })    
                 result[i].setDataValue('Weather', weather.data.data[0])
             }
+          
             res.status(200).json(result)
         } catch (err) {
             next(err)
