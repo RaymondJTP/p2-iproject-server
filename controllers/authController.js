@@ -71,7 +71,7 @@ class Controller{
             });
 
 
-            res.status(200).json({message: 'Login Succes', access_token})
+            res.status(200).json({message: 'Login Succes',id : getUser.id, access_token})
         } catch (err) {
             next(err)
         }

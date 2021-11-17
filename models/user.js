@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-
+const axios = require('axios')
 const {hashPassword} = require('../helpers/bycript')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.UserRoom, {foreignKey : 'UserId'})
+    }
+    async getWeather(){
+        let weather = await axios({
+          method : 'GET',
+          url : 'https://api.weatherbit.io/v2.0/current?lat=35.7796&lon=-78.6382&key=aa901ff9d89c451fa8ce9fc54b2b94cf&include=minutely'
+        })
+        return weather.data.data[0]
     }
   };
   User.init({
